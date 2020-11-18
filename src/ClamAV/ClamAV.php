@@ -113,7 +113,9 @@ abstract class ClamAV
         $return = [];
 
         foreach (explode("\n", trim($this->sendCommand('CONTSCAN ' . $file))) as $results) {
-            [$file, $stats] = explode(':', $results);
+            $result = explode(':', $results);
+            $file = @$result[0];
+            $stats = @$result[1];
             $return[] = ['file' => $file, 'stats' => trim($stats)];
         }
 
