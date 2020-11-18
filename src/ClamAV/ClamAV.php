@@ -15,7 +15,7 @@ abstract class ClamAV
     /**
      * @var int
      */
-    public const CLAMAV_MAX = 20000;
+    public $CLAMAV_MAX = 20000;
 
     /**
      * @return resource
@@ -33,7 +33,7 @@ abstract class ClamAV
         $socket = $this->getSocket();
 
         socket_send($socket, $command, strlen($command), 0);
-        socket_recv($socket, $return, self::CLAMAV_MAX, 0);
+        socket_recv($socket, $return, $this->CLAMAV_MAX, 0);
         socket_close($socket);
 
         return $return;
@@ -46,7 +46,7 @@ abstract class ClamAV
      *
      * @return bool
      */
-    public function ping(): bool
+    public function ping()
     {
         $return = $this->sendCommand('PING');
         return trim($return) === 'PONG';
@@ -57,7 +57,7 @@ abstract class ClamAV
      *
      * @return string
      */
-    public function version(): string
+    public function version()
     {
         return trim($this->sendCommand('VERSION'));
     }
@@ -89,7 +89,7 @@ abstract class ClamAV
      * @param string $file
      * @return bool return true if file is OK or false if not
      */
-    public function fileScan(string $file): bool
+    public function fileScan(string $file)
     {
         $out = $this->sendCommand('SCAN ' . $file);
 
@@ -108,7 +108,7 @@ abstract class ClamAV
      * @param string $file
      * @return array
      */
-    public function continueScan(string $file): array
+    public function continueScan(string $file)
     {
         $return = [];
 

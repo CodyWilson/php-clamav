@@ -8,9 +8,6 @@ use function socket_create;
 
 class Network extends ClamAV
 {
-    private const CLAMAV_HOST = '127.0.0.1';
-    private const CLAMAV_PORT = 3310;
-
     /**
      * @var string
      */
@@ -29,7 +26,7 @@ class Network extends ClamAV
      * @param string $host
      * @param int $port
      */
-    public function __construct(string $host = self::CLAMAV_HOST, int $port = self::CLAMAV_PORT)
+    public function __construct(string $host = '127.0.0.1', int $port = 3310)
     {
         $this->host = $host;
         $this->port = $port;

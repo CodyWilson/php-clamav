@@ -7,8 +7,6 @@ use function socket_create;
 
 class Pipe extends ClamAV
 {
-    private const CLAMAV_HOST = '/var/run/clamav/clamd.ctl';
-
     /**
      * @var string
      */
@@ -22,7 +20,7 @@ class Pipe extends ClamAV
      *
      * @param string $pip
      */
-    public function __construct(string $pip = self::CLAMAV_HOST)
+    public function __construct(string $pip = '/var/run/clamav/clamd.ctl')
     {
         $this->pip = $pip;
     }
