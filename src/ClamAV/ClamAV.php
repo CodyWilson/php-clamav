@@ -121,4 +121,37 @@ abstract class ClamAV
 
         return $return;
     }
+
+    public function instreamScan(string $file)
+    {
+        $socket = $this->getSocket();
+        $instream = "zINSTREAM\0";
+        socket_send($socket, $instream, strlen($instream), 0);
+
+        $h = fopen($file, 'r');
+        if (!$h) {
+            return false;
+        }
+
+        $total = 0;
+        while (!feof($h)) {
+            $data = fread($h, 2048);
+            $total += strlen($data);
+            socket_send($socket, pack('N',strlen($data)), 4, 0);
+            socket_send($socket, $data, strlen($data), 0);
+        }
+        socket_send($socket, pack('N', 0), 4, 0);
+        $result = null;
+        socket_recv($socket, $result, 200, 0);
+        socket_close($socket);
+
+        $out = $result;
+
+        $out = explode(':', $out);
+        $stats = end($out);
+
+        $result = trim($stats);
+
+        return ($result === 'OK');
+    }
 }
